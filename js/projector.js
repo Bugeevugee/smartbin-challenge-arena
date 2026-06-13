@@ -87,15 +87,23 @@ function subscribeToLiveScores(sessionId) {
 
   firestoreUnsubscribe = db.collection('scores')
     .where('sessionId', '==', sessionId)
-    .orderBy('score', 'desc')
-    .orderBy('timestamp', 'asc')
-    .limit(10)
     .onSnapshot(querySnap => {
       const scores = [];
       querySnap.forEach(doc => {
         scores.push(doc.data());
       });
-      renderStandings(scores);
+
+      // Sort in-memory to avoid needing composite indexes in Firebase
+      scores.sort((a, b) => {
+        if (b.score !== a.score) {
+          return b.score - a.score;
+        }
+        const timeA = a.timestamp?.seconds || new Date(a.timestamp).getTime() || 0;
+        const timeB = b.timestamp?.seconds || new Date(b.timestamp).getTime() || 0;
+        return timeA - timeB;
+      });
+
+      renderStandings(scores.slice(0, 10));
     }, err => {
       console.error('Firestore score listening failed:', err);
     });

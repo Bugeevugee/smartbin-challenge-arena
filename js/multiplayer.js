@@ -143,9 +143,6 @@ export async function getActiveLeaderboard(limitVal = 20) {
   try {
     const querySnap = await db.collection('scores')
       .where('sessionId', '==', session.sessionId)
-      .orderBy('score', 'desc')
-      .orderBy('timestamp', 'asc')
-      .limit(limitVal)
       .get();
 
     const results = [];
@@ -153,7 +150,18 @@ export async function getActiveLeaderboard(limitVal = 20) {
       results.push(doc.data());
     });
 
-    return results;
+    // Sort in-memory to avoid needing composite indexes in Firebase
+    results.sort((a, b) => {
+      if (b.score !== a.score) {
+        return b.score - a.score;
+      }
+      // Fallback to timestamp sorting if scores match
+      const timeA = a.timestamp?.seconds || new Date(a.timestamp).getTime() || 0;
+      const timeB = b.timestamp?.seconds || new Date(b.timestamp).getTime() || 0;
+      return timeA - timeB;
+    });
+
+    return results.slice(0, limitVal);
   } catch (err) {
     console.error("Firestore getActiveLeaderboard error:", err);
     // Fall back to local
