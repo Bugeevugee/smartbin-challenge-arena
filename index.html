@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>SmartBin Challenge Arena - EcoLoop Systems</title>
+  <meta name="description" content="Test your recycling speed, learn sustainability, and compete on the live leaderboard!">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  
+  <main class="glass-card pulse-card">
+    <div class="logo-container">
+      <!-- Logo of Veronika's startup startup-demo logo.png -->
+      <img src="assets/logo.png" alt="EcoLoop Systems Logo" class="app-logo" id="logoImg" onerror="this.src='https://img.icons8.com/color/144/recycle.png'">
+      <h1 class="app-title" id="mainTitle">SmartBin Arena</h1>
+      <p class="app-subtitle" id="subTitle">Challenge</p>
+    </div>
+
+    <div class="eco-pitch" id="pitchText">
+      <strong>EcoLoop Systems:</strong> Play our gamified recycling arena! Sort waste into AI-powered SmartBins, power up your EcoAvatar, and save CO₂ in real time.
+    </div>
+
+    <div class="input-group">
+      <label for="nickname" class="input-label" id="labelNick">Enter Nickname</label>
+      <input type="text" id="nickname" class="input-field" placeholder="EcoWarrior" maxlength="15" autofocus required>
+    </div>
+
+    <div style="margin-top: 10px;">
+      <button id="btnMulti" class="btn btn-primary">
+        <span>🏆 Join Competition</span>
+      </button>
+      <button id="btnSingle" class="btn btn-secondary">
+        <span>🌱 Local Practice</span>
+      </button>
+      
+      <!-- Quick link to view leaderboard without playing -->
+      <button id="btnLeaderboard" class="btn btn-outline" style="font-size: 0.85rem; padding: 10px;">
+        📊 View Leaderboard
+      </button>
+    </div>
+  </main>
+
+  <footer style="margin-top: 24px; font-size: 0.8rem; color: hsl(var(--text-muted)); text-align: center; z-index: 10;">
+    &copy; 2026 EcoLoop Systems | Created by Veronika Khimenko
+  </footer>
+
+  <script>
+    // Simple verification and routing
+    const nicknameInput = document.getElementById('nickname');
+    const btnMulti = document.getElementById('btnMulti');
+    const btnSingle = document.getElementById('btnSingle');
+    const btnLeaderboard = document.getElementById('btnLeaderboard');
+
+    // Retrieve previous nickname if exists
+    if (localStorage.getItem('eco_nickname')) {
+      nicknameInput.value = localStorage.getItem('eco_nickname');
+    }
+
+    function saveNickname() {
+      let nick = nicknameInput.value.trim();
+      if (!nick) {
+        // Pre-fill a random one if empty
+        const randomNum = Math.floor(Math.random() * 900) + 100;
+        nick = 'EcoStudent_' + randomNum;
+      }
+      localStorage.setItem('eco_nickname', nick);
+      return nick;
+    }
+
+    btnMulti.addEventListener('click', () => {
+      const nickname = saveNickname();
+      window.location.href = `game.html?mode=multi&nickname=${encodeURIComponent(nickname)}`;
+    });
+
+    btnSingle.addEventListener('click', () => {
+      const nickname = saveNickname();
+      window.location.href = `game.html?mode=single&nickname=${encodeURIComponent(nickname)}`;
+    });
+
+    btnLeaderboard.addEventListener('click', () => {
+      window.location.href = `game.html?viewLeaderboard=true`;
+    });
+  </script>
+</body>
+</html>

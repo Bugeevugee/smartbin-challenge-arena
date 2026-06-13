@@ -1,0 +1,308 @@
+/* Fullscreen Projector CSS layout specs */
+.projector-body {
+  width: 100vw;
+  height: 100vh;
+  padding: 24px;
+  background: radial-gradient(circle at center, #0d1e15, #080d16);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.projector-layout {
+  display: grid;
+  grid-template-columns: 1.8fr 1fr;
+  gap: 24px;
+  width: 100%;
+  height: 100%;
+  max-width: 1400px;
+}
+
+/* Left Board Panel */
+.leaderboard-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: none;
+  width: 100%;
+  padding: 36px;
+  text-align: left;
+}
+
+.projector-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border-bottom: 2px solid rgba(255,255,255,0.06);
+  padding-bottom: 20px;
+  margin-bottom: 24px;
+}
+
+.projector-logo {
+  max-width: 90px;
+  height: auto;
+  border-radius: 12px;
+}
+
+.projector-title {
+  font-size: 2.5rem;
+  background: linear-gradient(to right, #ffffff, #88f3b2, #00E5FF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.1;
+  margin-bottom: 4px;
+}
+
+.projector-session {
+  font-size: 1.1rem;
+  color: #88f3b2;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.rankings-board {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.rankings-header {
+  display: grid;
+  grid-template-columns: 80px 1fr 140px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: hsl(var(--text-muted));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+}
+
+.rankings-container {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 8px;
+}
+
+/* Individual Score Rows */
+.rankings-row {
+  display: grid;
+  grid-template-columns: 80px 1fr 140px;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 14px;
+  padding: 12px 16px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2), background 0.3s;
+}
+
+/* Relative Score progress indicator bar backing */
+.rankings-row::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: var(--progress-pct, 0%);
+  background: linear-gradient(90deg, rgba(45, 138, 78, 0.1), rgba(0, 229, 255, 0.1));
+  z-index: 1;
+  pointer-events: none;
+  transition: width 0.8s ease-out;
+}
+
+.rankings-row > * {
+  z-index: 2;
+  position: relative;
+}
+
+.proj-rank-num {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.4rem;
+  color: hsl(var(--text-muted));
+}
+
+.proj-player-name {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 20px;
+}
+
+.proj-score-val {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.4rem;
+  color: #00E5FF;
+  text-align: right;
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
+}
+
+/* Top 3 Stylings */
+.rankings-row:nth-child(1) {
+  background: rgba(241, 196, 15, 0.06);
+  border-color: rgba(241, 196, 15, 0.25);
+}
+.rankings-row:nth-child(1) .proj-rank-num {
+  color: #f1c40f;
+  text-shadow: 0 0 12px rgba(241, 196, 15, 0.4);
+}
+.rankings-row:nth-child(1) .proj-score-val {
+  color: #f1c40f;
+}
+
+.rankings-row:nth-child(2) {
+  background: rgba(149, 165, 166, 0.05);
+  border-color: rgba(149, 165, 166, 0.2);
+}
+.rankings-row:nth-child(2) .proj-rank-num {
+  color: #bdc3c7;
+}
+
+.rankings-row:nth-child(3) {
+  background: rgba(211, 84, 0, 0.04);
+  border-color: rgba(211, 84, 0, 0.15);
+}
+.rankings-row:nth-child(3) .proj-rank-num {
+  color: #e67e22;
+}
+
+/* Right Sidebar Panel */
+.sidebar-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  padding: 36px;
+  max-width: none;
+  width: 100%;
+}
+
+.sidebar-info {
+  text-align: center;
+}
+
+.sidebar-info h2 {
+  font-size: 1.8rem;
+  color: #88f3b2;
+  margin-bottom: 8px;
+}
+
+.sidebar-info p {
+  font-size: 0.9rem;
+  color: hsl(var(--text-muted));
+  line-height: 1.5;
+}
+
+/* QR Code Container and styling */
+.qr-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  background: rgba(15, 23, 42, 0.5);
+  border: 1.5px dashed rgba(0, 229, 255, 0.3);
+  border-radius: 20px;
+  padding: 24px;
+  width: 100%;
+  max-width: 280px;
+  animation: qrPulseBorder 3s infinite alternate ease-in-out;
+}
+
+@keyframes qrPulseBorder {
+  0% { border-color: rgba(0, 229, 255, 0.2); box-shadow: 0 0 10px rgba(0, 229, 255, 0.05); }
+  100% { border-color: rgba(0, 229, 255, 0.5); box-shadow: 0 0 20px rgba(0, 229, 255, 0.15); }
+}
+
+.qr-code {
+  width: 200px;
+  height: 200px;
+  background: white;
+  padding: 10px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+.qr-subtext {
+  font-size: 0.75rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: #00E5FF;
+  word-break: break-all;
+  text-align: center;
+}
+
+/* Impact Statistics Box */
+.eco-stats-ticker {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 16px;
+  width: 100%;
+  text-align: left;
+}
+
+.eco-stats-ticker h3 {
+  font-size: 0.95rem;
+  color: white;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.eco-stats-ticker p {
+  font-size: 0.75rem;
+  color: hsl(var(--text-muted));
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+
+.eco-stat-mini {
+  background: rgba(45, 138, 78, 0.12);
+  border: 1px solid rgba(45, 138, 78, 0.25);
+  border-radius: 12px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.eco-mini-val {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #2ecc71;
+  text-shadow: 0 0 10px rgba(46, 204, 113, 0.3);
+}
+
+.eco-mini-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: hsl(var(--text-muted));
+  margin-top: 2px;
+}
+
+/* Scaling adaptations for smaller projectors */
+@media (max-height: 600px) {
+  .projector-layout { gap: 12px; }
+  .leaderboard-panel, .sidebar-panel { padding: 16px; }
+  .qr-code { width: 140px; height: 140px; }
+  .qr-container { padding: 12px; }
+  .projector-title { font-size: 1.8rem; }
+  .proj-score-val, .proj-rank-num { font-size: 1.1rem; }
+  .proj-player-name { font-size: 0.95rem; }
+}

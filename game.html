@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Challenge Arena - SmartBin Challenge Arena</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/game.css">
+</head>
+<body>
+
+  <!-- Game container -->
+  <div id="gameContainer" class="game-container">
+    
+    <!-- Game Header: HUD -->
+    <header class="game-hud">
+      <div class="hud-item">
+        <span class="hud-label">SCORE</span>
+        <span id="scoreDisplay" class="hud-value score-text">0</span>
+      </div>
+
+      <div class="hud-item timer-container">
+        <span class="hud-label">TIME</span>
+        <div class="timer-bar-bg">
+          <div id="timerBar" class="timer-bar-fill"></div>
+        </div>
+        <span id="timerText" class="hud-value timer-text">60</span>
+      </div>
+
+      <div class="hud-item">
+        <span class="hud-label">STREAK</span>
+        <span id="streakDisplay" class="hud-value streak-text">0</span>
+      </div>
+    </header>
+
+    <!-- Difficulty Overlay notifications -->
+    <div id="alertOverlay" class="alert-overlay">
+      <span id="alertText">STAGE 1</span>
+    </div>
+
+    <!-- Active game arena where items fall -->
+    <div id="playArena" class="play-arena">
+      <!-- Welcome/Mode indicator -->
+      <div id="modeIndicator" class="mode-badge">Multiplayer Competition</div>
+      
+      <!-- Tutorial tip overlay -->
+      <div id="dragTip" class="drag-tip">Drag waste to correct bins!</div>
+
+      <!-- Spawn area is inside this container -->
+    </div>
+
+    <!-- Sorting Bins Section -->
+    <section class="bins-container">
+      <!-- PLASTIC -->
+      <div class="bin bin-plastic" data-bin="plastic" id="bin-plastic">
+        <div class="bin-cap"></div>
+        <div class="bin-body">
+          <div class="bin-label">PLASTIC</div>
+          <svg class="bin-icon" viewBox="0 0 24 24">
+            <path d="M12,2A3,3 0 0,0 9,5V6H6A2,2 0 0,0 4,8V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8A2,2 0 0,0 18,6H15V5A3,3 0 0,0 12,2M12,4A1,1 0 0,1 13,5V6H11V5A1,1 0 0,1 12,4M6,8H18V20H6V8M9,10V12H15V10H17V14H7V10H9M9,16V18H15V16H9Z"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- PAPER -->
+      <div class="bin bin-paper" data-bin="paper" id="bin-paper">
+        <div class="bin-cap"></div>
+        <div class="bin-body">
+          <div class="bin-label">PAPER</div>
+          <svg class="bin-icon" viewBox="0 0 24 24">
+            <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M16,11H8V13H16V11M16,15H8V17H16V15Z"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- GLASS -->
+      <div class="bin bin-glass" data-bin="glass" id="bin-glass">
+        <div class="bin-cap"></div>
+        <div class="bin-body">
+          <div class="bin-label">GLASS</div>
+          <svg class="bin-icon" viewBox="0 0 24 24">
+            <path d="M12,2A2,2 0 0,0 10,4V7H9A2,2 0 0,0 7,9V11H17V9A2,2 0 0,0 15,7H14V4A2,2 0 0,0 12,2M9,13V20A2,2 0 0,0 11,22H13A2,2 0 0,0 15,20V13H9Z"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- ORGANIC -->
+      <div class="bin bin-organic" data-bin="organic" id="bin-organic">
+        <div class="bin-cap"></div>
+        <div class="bin-body">
+          <div class="bin-label">ORGANIC</div>
+          <svg class="bin-icon" viewBox="0 0 24 24">
+            <path d="M12,2C15.97,2 19.34,4.72 20.21,8.5C18.66,7.55 16.85,7 14.9,7C10.74,7 7.23,9.81 6.22,13.6C5.5,13.21 4.77,13 4,13C2.31,13 0.82,13.92 0,15.3C0.82,11.38 4.25,8.5 8.38,8.5C9.4,8.5 10.39,8.7 11.3,9.08C11,6.8 11.23,4.5 12,2M15,10C18.31,10 21,12.69 21,16C21,18.06 20,19.89 18.44,21C16.94,18.62 14.28,17 11.2,17C10.45,17 9.71,17.1 9,17.3C9.6,14.25 12.11,12 15.2,12C16,12 16.79,12.16 17.5,12.46C17,11 16.12,9.75 15,10Z"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- Controls footer (audio toggle, exit) -->
+    <footer class="game-footer">
+      <button id="soundToggleBtn" class="footer-action-btn" aria-label="Mute Sounds">
+        🔊 Sound On
+      </button>
+      <button id="quitBtn" class="footer-action-btn">
+        🚪 Leave Game
+      </button>
+    </footer>
+  </div>
+
+  <!-- End Game Screen Overlay Modal -->
+  <div id="endGameModal" class="end-game-modal hidden">
+    <div class="glass-card end-game-card">
+      <h2 id="endModalTitle">Game Finished!</h2>
+      <p id="sessionCodeBadge" class="session-code-badge">Competition Room</p>
+      
+      <div class="end-stats-container">
+        <div class="end-stat-box">
+          <span class="end-stat-label">Final Score</span>
+          <span id="endScore" class="end-stat-val">0</span>
+        </div>
+        <div class="end-stat-box">
+          <span class="end-stat-label">Max Streak</span>
+          <span id="endStreak" class="end-stat-val">0</span>
+        </div>
+        <div class="end-stat-box">
+          <span class="end-stat-label">CO₂ Saved</span>
+          <span id="endCO2" class="end-stat-val">0.0 kg</span>
+        </div>
+        <div class="end-stat-box" id="endRankBox">
+          <span class="end-stat-label">Leaderboard Rank</span>
+          <span id="endRank" class="end-stat-val">#--</span>
+        </div>
+      </div>
+
+      <!-- Live leaderboards container -->
+      <div class="leaderboard-section">
+        <h3>Leaderboard standings</h3>
+        <div class="leaderboard-headers">
+          <span>Rank</span>
+          <span>Player</span>
+          <span>Score</span>
+        </div>
+        <div id="leaderboardList" class="leaderboard-list">
+          <!-- Dynamically populated via Firebase -->
+          <div class="leaderboard-loading">Loading standings...</div>
+        </div>
+      </div>
+
+      <div class="modal-buttons">
+        <button id="btnPlayAgain" class="btn btn-primary">Play Again</button>
+        <button id="btnExitToMenu" class="btn btn-outline">Main Menu</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Include Firebase SDK scripts (v9 compatibility scripts from cdn) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+
+  <!-- Game configuration and Firebase connection -->
+  <script src="js/firebase-config.js" type="module"></script>
+  <script src="js/multiplayer.js" type="module"></script>
+  <script src="js/game-logic.js" type="module"></script>
+</body>
+</html>

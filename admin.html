@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - SmartBin Challenge Arena</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .admin-card {
+      max-width: 600px;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-top: 6px;
+    }
+    .status-active {
+      background: rgba(46, 204, 113, 0.15);
+      border: 1px solid rgba(46, 204, 113, 0.4);
+      color: #2ecc71;
+    }
+    .status-fallback {
+      background: rgba(241, 196, 15, 0.15);
+      border: 1px solid rgba(241, 196, 15, 0.4);
+      color: #f1c40f;
+    }
+    .admin-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 24px;
+      text-align: left;
+    }
+    .action-row {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 16px;
+      padding: 16px;
+    }
+    .action-row h3 {
+      font-size: 1rem;
+      color: white;
+      margin-bottom: 6px;
+    }
+    .action-row p {
+      font-size: 0.8rem;
+      color: hsl(var(--text-muted));
+      margin-bottom: 12px;
+    }
+    .login-modal {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: hsl(var(--bg-dark));
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      transition: opacity 0.3s ease;
+    }
+    .login-modal.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Passcode Access Gate -->
+  <div id="loginGate" class="login-modal">
+    <div class="glass-card">
+      <h2 style="margin-bottom: 12px; color: #00E5FF;">Admin Access</h2>
+      <p style="font-size: 0.85rem; color: hsl(var(--text-muted)); margin-bottom: 20px;">
+        Please enter the administrative passcode to control the competition arena.
+      </p>
+      <div class="input-group" style="margin: 16px 0;">
+        <label for="passcode" class="input-label">Passcode</label>
+        <input type="password" id="passcode" class="input-field" placeholder="••••••••" autofocus>
+      </div>
+      <p id="loginError" style="color: hsl(var(--accent-red)); font-size: 0.8rem; height: 16px; margin-bottom: 12px;"></p>
+      <button id="btnLogin" class="btn btn-primary">Enter Dashboard</button>
+      <button onclick="window.location.href='index.html'" class="btn btn-outline">Back to Game</button>
+    </div>
+  </div>
+
+  <!-- Main Admin Panel (hidden until logged in) -->
+  <main class="glass-card admin-card">
+    <div class="logo-container">
+      <img src="assets/logo.png" alt="EcoLoop Systems Logo" class="app-logo" onerror="this.src='https://img.icons8.com/color/144/recycle.png'">
+      <h1 class="app-title">Admin Controls</h1>
+      <p class="app-subtitle">EcoLoop Systems Arena</p>
+    </div>
+
+    <div style="margin-top: 10px;">
+      <span class="hud-label">Database Status</span><br>
+      <span id="dbStatusBadge" class="status-badge status-fallback">Checking DB connection...</span>
+    </div>
+
+    <div class="admin-actions">
+      <!-- Session management -->
+      <div class="action-row">
+        <h3>Create Competition Session</h3>
+        <p>Generates a fresh Session ID. Pushes all new player scores onto a blank scoreboard. (Recommended for starting a new class or event round without deleting old data).</p>
+        <div class="input-group" style="margin: 8px 0 12px 0;">
+          <label class="input-label">Session Name</label>
+          <input type="text" id="sessionNameInput" class="input-field" placeholder="Round 2 - Room 101" style="padding: 10px 14px;">
+        </div>
+        <button id="btnNewSession" class="btn btn-primary" style="padding: 12px;">⚡ Launch New Session</button>
+      </div>
+
+      <!-- Reset Database -->
+      <div class="action-row">
+        <h3>Purge Current Leaderboard</h3>
+        <p style="color: #ff8888;">⚠️ WARNING: This completely deletes all player records from the current active session. This action is permanent.</p>
+        <button id="btnPurgeSession" class="btn btn-secondary" style="background: linear-gradient(135deg, #ff3333, #b30000); padding: 12px;">🗑️ Purge Active Leaderboard</button>
+      </div>
+    </div>
+
+    <!-- Quick navigation links -->
+    <div style="margin-top: 24px; display: flex; gap: 8px;">
+      <button onclick="window.open('projector.html', '_blank')" class="btn btn-outline" style="margin-top:0;">📺 Open Projector Screen</button>
+      <button onclick="window.location.href='index.html'" class="btn btn-outline" style="margin-top:0;">🏡 Back to Game</button>
+    </div>
+  </main>
+
+  <footer style="margin-top: 24px; font-size: 0.8rem; color: hsl(var(--text-muted)); text-align: center;">
+    &copy; 2026 EcoLoop Systems | Created by Veronika Khimenko
+  </footer>
+
+  <!-- Include Firebase SDK scripts (v9 compatibility scripts from cdn) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+
+  <!-- Connect scripts -->
+  <script src="js/firebase-config.js" type="module"></script>
+  <script src="js/admin.js" type="module"></script>
+</body>
+</html>

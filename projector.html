@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Arena Leaderboard - SmartBin Challenge Arena</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/projector.css">
+</head>
+<body class="projector-body">
+
+  <div class="projector-layout">
+    
+    <!-- Left panel: Leaderboard columns -->
+    <main class="leaderboard-panel glass-card">
+      <header class="projector-header">
+        <img src="assets/logo.png" alt="EcoLoop Logo" class="projector-logo" onerror="this.src='https://img.icons8.com/color/144/recycle.png'">
+        <div>
+          <h1 class="projector-title">SmartBin Challenge Arena</h1>
+          <p id="activeSessionName" class="projector-session">Active Competition Round</p>
+        </div>
+      </header>
+
+      <!-- Rankings lists -->
+      <section class="rankings-board">
+        <div class="rankings-header">
+          <span>Rank</span>
+          <span>Player Nickname</span>
+          <span style="text-align: right;">Total Score</span>
+        </div>
+        <div id="rankingsContainer" class="rankings-container">
+          <div class="leaderboard-loading">Waiting for EcoWarriors to join the challenge...</div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Right panel: Joining details & QR code -->
+    <aside class="sidebar-panel glass-card">
+      <div class="sidebar-info">
+        <h2>Scan to Play!</h2>
+        <p>Enter your nickname and sort items into the EcoLoop bins. Can you top the arena leaderboard?</p>
+      </div>
+
+      <!-- Live QR Code container -->
+      <div class="qr-container">
+        <img id="qrImage" src="" alt="Scan QR Code to join" class="qr-code">
+        <span class="qr-subtext" id="qrLinkText">URL loading...</span>
+      </div>
+
+      <div class="eco-stats-ticker">
+        <h3>Startup Eco-Impact</h3>
+        <p>Sorting waste prevents landfill overflow and reduces CO₂ emissions. SmartBins separate materials automatically with AI vision.</p>
+        <div class="eco-stat-mini">
+          <span class="eco-mini-val" id="totalCo2Display">0.00 kg</span>
+          <span class="eco-mini-label">Total CO₂ Saved This Session</span>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Include Firebase SDK scripts (v9 compatibility scripts from cdn) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+
+  <!-- Connect config and execution scripts -->
+  <script src="js/firebase-config.js" type="module"></script>
+  <script src="js/projector.js" type="module"></script>
+</body>
+</html>
