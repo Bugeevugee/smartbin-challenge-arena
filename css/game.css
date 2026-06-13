@@ -1,15 +1,34 @@
-/* Mobile-first layout for active gameplay */
+/* Desktop & Mobile Responsive container styling */
 .game-container {
   display: flex;
   flex-direction: column;
   width: 100vw;
   height: 100vh;
-  height: -webkit-fill-available;
-  max-width: 500px;
+  max-width: 450px;
   background: radial-gradient(circle at top, hsl(var(--bg-navy)), hsl(var(--bg-dark)));
   overflow: hidden;
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
   position: relative;
+  transition: all 0.3s ease;
+}
+
+/* On desktops, render as a premium mobile phone frame */
+@media (min-width: 500px) and (min-height: 600px) {
+  .game-container {
+    height: 90vh;
+    max-height: 800px;
+    border-radius: 32px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* Mobile-specific Safari address bar fix */
+@supports (-webkit-touch-callout: none) {
+  @media (max-width: 500px) {
+    .game-container {
+      height: -webkit-fill-available;
+    }
+  }
 }
 
 /* Heads-up display (HUD) */
