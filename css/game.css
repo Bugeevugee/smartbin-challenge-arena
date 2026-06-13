@@ -161,40 +161,80 @@
 /* Falling Waste Item */
 .falling-item {
   position: absolute;
-  width: 65px;
-  height: 65px;
+  width: 80px;
+  height: 80px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: rgba(15, 23, 42, 0.75);
+  background: rgba(15, 23, 42, 0.85);
   border: 1.5px solid rgba(255, 255, 255, 0.15);
   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.35);
   cursor: grab;
   user-select: none;
   touch-action: none;
   z-index: 100;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  padding: 6px;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.3s;
 }
 
 .falling-item:active {
   cursor: grabbing;
   border-color: hsl(var(--accent-cyan));
   box-shadow: 0 8px 25px rgba(0, 229, 255, 0.4);
-  transform: scale(1.1);
+  transform: scale(1.08);
 }
 
-.falling-item svg {
-  width: 65%;
-  height: 65%;
+.item-icon-wrapper {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   pointer-events: none;
 }
 
-/* Waste categories indicator colors on the falling items */
-.falling-item.plastic-hint { border-color: rgba(0, 229, 255, 0.4); }
-.falling-item.paper-hint { border-color: rgba(45, 138, 78, 0.4); }
-.falling-item.glass-hint { border-color: rgba(5, 102, 141, 0.4); }
-.falling-item.organic-hint { border-color: rgba(139, 90, 43, 0.4); }
+.item-icon-wrapper svg {
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.item-name-tag {
+  font-family: var(--font-body);
+  font-size: 0.58rem;
+  font-weight: 800;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: center;
+  margin-top: 4px;
+  pointer-events: none;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8), 0 0 4px rgba(0, 0, 0, 0.5);
+  width: 92%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Category-specific glowing background gradients & borders */
+.falling-item.plastic-hint { 
+  border-color: rgba(0, 229, 255, 0.4); 
+  background: radial-gradient(circle, rgba(0, 229, 255, 0.18) 0%, rgba(15, 23, 42, 0.92) 80%);
+}
+.falling-item.paper-hint { 
+  border-color: rgba(45, 138, 78, 0.4); 
+  background: radial-gradient(circle, rgba(46, 204, 113, 0.18) 0%, rgba(15, 23, 42, 0.92) 80%);
+}
+.falling-item.glass-hint { 
+  border-color: rgba(5, 102, 141, 0.4); 
+  background: radial-gradient(circle, rgba(52, 152, 219, 0.18) 0%, rgba(15, 23, 42, 0.92) 80%);
+}
+.falling-item.organic-hint { 
+  border-color: rgba(230, 126, 34, 0.4); 
+  background: radial-gradient(circle, rgba(230, 126, 34, 0.18) 0%, rgba(15, 23, 42, 0.92) 80%);
+}
 
 /* Sorting Bins Section */
 .bins-container {

@@ -337,13 +337,18 @@ function spawnWasteItem() {
   // Create element wrapper
   const itemEl = document.createElement('div');
   itemEl.className = `falling-item ${itemData.category}-hint`;
-  itemEl.innerHTML = itemData.svg;
+  
+  // Design: Add an inner icon container and a clear text label
+  itemEl.innerHTML = `
+    <div class="item-icon-wrapper">${itemData.svg}</div>
+    <span class="item-name-tag">${itemData.name}</span>
+  `;
 
   // Random horizontal positioning (staying inside boundary limits)
   const arenaWidth = playArena.clientWidth;
-  const itemWidth = 65;
+  const itemWidth = 80; // Increased from 65 for better touch target size
   const startX = Math.floor(Math.random() * (arenaWidth - itemWidth));
-  const startY = -80; // Spawn completely off-screen top
+  const startY = -90; // Spawn completely off-screen top
 
   itemEl.style.left = `${startX}px`;
   itemEl.style.top = `${startY}px`;
@@ -359,9 +364,9 @@ function spawnWasteItem() {
     y: startY,
     width: itemWidth,
     height: itemWidth,
-    fallSpeed: (2.5 + Math.random() * 1.5) * baseSpeedMultiplier,
+    fallSpeed: (2.0 + Math.random() * 1.2) * baseSpeedMultiplier, // Slightly slower base speed to compensate for read-time
     rotation: 0,
-    rotSpeed: (Math.random() - 0.5) * 4,
+    rotSpeed: (Math.random() - 0.5) * 3, // Slightly less spin for readability
     isDragging: false,
     dragStartX: 0,
     dragStartY: 0,
