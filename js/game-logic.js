@@ -442,7 +442,16 @@ function initGame() {
 
   // Handle immediate leaderboard trigger
   if (viewLeaderboardOnly) {
+    endModalTitle.innerText = "Leaderboard Standings";
+    endRankBox.style.display = 'none';
+    // Hide individual run stats since no game was played
+    const statsContainer = document.querySelector('.end-stats-container');
+    if (statsContainer) {
+      statsContainer.style.display = 'none';
+    }
+    
     showEndGameModal();
+    loadLeaderboardPreview();
     return;
   }
 
@@ -910,6 +919,13 @@ function endGame() {
 
 async function processEndStates() {
   showEndGameModal();
+
+  endModalTitle.innerText = "Game Finished!";
+  // Restore stats grid display for post-game modals
+  const statsContainer = document.querySelector('.end-stats-container');
+  if (statsContainer) {
+    statsContainer.style.display = 'grid';
+  }
 
   endScore.innerText = score;
   endStreak.innerText = maxStreak;
