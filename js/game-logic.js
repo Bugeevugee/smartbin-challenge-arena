@@ -418,9 +418,27 @@ function initGame() {
     sessionCodeBadge.innerText = 'practice round';
   }
 
-  // Pre-load audio hook on user interaction
-  document.addEventListener('touchstart', initAudio, { once: true });
-  document.addEventListener('click', initAudio, { once: true });
+  // Robust audio context activation on touch/click
+  const enableAudio = () => {
+    initAudio();
+    if (audioCtx && audioCtx.state === 'suspended') {
+      audioCtx.resume().then(() => {
+        console.log("AudioContext unlocked successfully on interaction.");
+      });
+    }
+    // Remove listeners once audio is unlocked
+    document.removeEventListener('touchstart', enableAudio);
+    document.removeEventListener('click', enableAudio);
+  };
+  document.addEventListener('touchstart', enableAudio);
+  document.addEventListener('click', enableAudio);
+
+  // Freeze mobile page scroll during active play using programmatic non-passive listener
+  document.addEventListener('touchmove', (e) => {
+    if (isPlaying) {
+      e.preventDefault();
+    }
+  }, { passive: false });
 
   // Handle immediate leaderboard trigger
   if (viewLeaderboardOnly) {

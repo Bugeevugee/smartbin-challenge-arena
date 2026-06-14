@@ -122,6 +122,7 @@
   width: 100%;
   background: rgba(15, 23, 42, 0.2);
   z-index: 10;
+  touch-action: none; /* Prevents scroll gestures on mobile phone inside active board */
 }
 
 .mode-badge {
@@ -204,7 +205,7 @@
   left: 50%;
   transform: translateX(-50%);
   font-family: var(--font-body);
-  font-size: 0.52rem;
+  font-size: 0.65rem; /* Increased for readability */
   font-weight: 800;
   color: white;
   text-transform: uppercase;
@@ -217,7 +218,7 @@
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.5);
   white-space: nowrap;
-  max-width: 105px;
+  max-width: 120px;
   overflow: hidden;
   text-overflow: ellipsis;
   z-index: 110;
@@ -299,9 +300,9 @@
 
 .bin-label {
   font-family: var(--font-display);
-  font-size: 0.65rem;
-  font-weight: 800;
-  letter-spacing: 0.05em;
+  font-size: 0.8rem; /* Increased for readability */
+  font-weight: 900;
+  letter-spacing: 0.08em;
   color: white;
 }
 
