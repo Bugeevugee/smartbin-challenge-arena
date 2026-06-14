@@ -458,8 +458,8 @@ function startGame() {
   isPlaying = true;
   hasSubmittedScore = false;
   currentStage = 1;
-  spawnRate = 2000;
-  baseSpeedMultiplier = 1.0;
+  spawnRate = 2400; // Slower initial spawn rate (was 2000)
+  baseSpeedMultiplier = 0.8; // Relaxed initial speed (was 1.0)
   frenzyModeActive = false;
 
   scoreDisplay.innerText = score;
@@ -491,24 +491,24 @@ function adjustDifficulty() {
     // 50-60s: Frenzy Mode!
     frenzyModeActive = true;
     currentStage = 4;
-    spawnRate = 600; // Super fast spawn
-    baseSpeedMultiplier = 2.4; // Very fast fall
+    spawnRate = 650; // was 600
+    baseSpeedMultiplier = 2.1; // was 2.4
     timerBar.className = 'timer-bar-fill critical';
     playArena.classList.add('frenzy-glow');
     displayAlert('🚨 FRENZY MODE: 2x POINTS! 🚨', 3000, true);
   } else if (elapsed >= 40 && elapsed < 50 && currentStage < 3) {
     // 40-50s: Stage 3 (Intense)
     currentStage = 3;
-    spawnRate = 900;
-    baseSpeedMultiplier = 1.8;
+    spawnRate = 1200; // was 900
+    baseSpeedMultiplier = 1.45; // was 1.8
     timerBar.className = 'timer-bar-fill warning';
     displayAlert('⚠️ SPEEDING UP! ⚠️', 2000);
     playSound('warning');
   } else if (elapsed >= 20 && elapsed < 40 && currentStage < 2) {
     // 20-40s: Stage 2 (Medium)
     currentStage = 2;
-    spawnRate = 1400;
-    baseSpeedMultiplier = 1.4;
+    spawnRate = 1750; // was 1400
+    baseSpeedMultiplier = 1.1; // was 1.4
     displayAlert('🌱 LEVEL UP! 🌱', 2000);
     playSound('warning');
   }
@@ -678,13 +678,17 @@ function checkBinHighlights(item) {
   const bins = document.querySelectorAll('.bin');
   const itemRect = item.el.getBoundingClientRect();
 
+  // Magnet drop leniency ranges (threshold margins around standard bins)
+  const thresholdX = 35; // 35px extra margin left & right
+  const thresholdY = 55; // 55px extra margin on top of lid
+
   bins.forEach(binEl => {
     const binRect = binEl.getBoundingClientRect();
     const isIntersecting = !(
-      itemRect.right < binRect.left ||
-      itemRect.left > binRect.right ||
-      itemRect.bottom < binRect.top ||
-      itemRect.top > binRect.bottom
+      itemRect.right < (binRect.left - thresholdX) ||
+      itemRect.left > (binRect.right + thresholdX) ||
+      itemRect.bottom < (binRect.top - thresholdY) ||
+      itemRect.top > (binRect.bottom + 10)
     );
 
     if (isIntersecting) {
@@ -701,13 +705,17 @@ function evaluateDrop(item) {
   const bins = document.querySelectorAll('.bin');
   let placedInBin = null;
 
+  // Same magnet thresholds as highlights check for drop confirmation consistency
+  const thresholdX = 35;
+  const thresholdY = 55;
+
   bins.forEach(binEl => {
     const binRect = binEl.getBoundingClientRect();
     const isIntersecting = !(
-      itemRect.right < binRect.left ||
-      itemRect.left > binRect.right ||
-      itemRect.bottom < binRect.top ||
-      itemRect.top > binRect.bottom
+      itemRect.right < (binRect.left - thresholdX) ||
+      itemRect.left > (binRect.right + thresholdX) ||
+      itemRect.bottom < (binRect.top - thresholdY) ||
+      itemRect.top > (binRect.bottom + 10)
     );
 
     if (isIntersecting) {
