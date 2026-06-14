@@ -262,7 +262,7 @@
   background: rgba(15, 23, 42, 0.85);
   border-top: 1px solid var(--glass-border);
   z-index: 20;
-  gap: 8px;
+  gap: 16px; /* Increased from 8px to prevent overlap triggers */
 }
 
 .bin {

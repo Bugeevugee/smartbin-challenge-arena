@@ -678,11 +678,16 @@ function checkBinHighlights(item) {
   const bins = document.querySelectorAll('.bin');
   const itemRect = item.el.getBoundingClientRect();
 
-  // Magnet drop leniency ranges (threshold margins around standard bins)
-  const thresholdX = 35; // 35px extra margin left & right
-  const thresholdY = 55; // 55px extra margin on top of lid
+  const thresholdX = 12; // Reduced from 35 to prevent adjacent highlights
+  const thresholdY = 55; // Forgiving vertical drop height
+
+  let closestBin = null;
+  let minDistance = Infinity;
 
   bins.forEach(binEl => {
+    // Clear highlight initially
+    binEl.classList.remove('drag-over');
+
     const binRect = binEl.getBoundingClientRect();
     const isIntersecting = !(
       itemRect.right < (binRect.left - thresholdX) ||
@@ -692,24 +697,36 @@ function checkBinHighlights(item) {
     );
 
     if (isIntersecting) {
-      binEl.classList.add('drag-over');
-    } else {
-      binEl.classList.remove('drag-over');
+      const itemCenter = itemRect.left + itemRect.width / 2;
+      const binCenter = binRect.left + binRect.width / 2;
+      const distance = Math.abs(itemCenter - binCenter);
+      
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestBin = binEl;
+      }
     }
   });
+
+  if (closestBin) {
+    closestBin.classList.add('drag-over');
+  }
 }
 
-// Process item sorting placements
 function evaluateDrop(item) {
   const itemRect = item.el.getBoundingClientRect();
   const bins = document.querySelectorAll('.bin');
-  let placedInBin = null;
-
-  // Same magnet thresholds as highlights check for drop confirmation consistency
-  const thresholdX = 35;
+  
+  const thresholdX = 12;
   const thresholdY = 55;
 
+  let closestBin = null;
+  let minDistance = Infinity;
+
   bins.forEach(binEl => {
+    // Clear highlight classes
+    binEl.classList.remove('drag-over');
+
     const binRect = binEl.getBoundingClientRect();
     const isIntersecting = !(
       itemRect.right < (binRect.left - thresholdX) ||
@@ -719,13 +736,19 @@ function evaluateDrop(item) {
     );
 
     if (isIntersecting) {
-      placedInBin = binEl.getAttribute('data-bin');
+      const itemCenter = itemRect.left + itemRect.width / 2;
+      const binCenter = binRect.left + binRect.width / 2;
+      const distance = Math.abs(itemCenter - binCenter);
+      
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestBin = binEl;
+      }
     }
-    // Always clear classes
-    binEl.classList.remove('drag-over');
   });
 
-  if (placedInBin) {
+  if (closestBin) {
+    const placedInBin = closestBin.getAttribute('data-bin');
     // Correct sort match check
     if (placedInBin === item.category) {
       handleCorrectSort(item);
