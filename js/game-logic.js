@@ -57,76 +57,283 @@ let spawnRate = 2000;      // ms between spawns
 let baseSpeedMultiplier = 1.0;
 let frenzyModeActive = false;
 
-// Waste Items Configuration (Categories & SVG representations)
+// Waste Items Configuration (Categories & highly detailed multi-colored SVGs)
 const WASTE_ITEMS_POOL = [
-  // Plastic Bin (Plastic, Metal packaging)
+  // Plastic Bin (Plastic packaging, caps, bottles)
   {
-    name: 'Plastic Water Bottle',
+    name: 'Water Bottle',
     category: 'plastic',
-    svg: `<svg viewBox="0 0 24 24" fill="#00E5FF"><path d="M12,2A1.5,1.5 0 0,1 13.5,3.5V5H10.5V3.5A1.5,1.5 0 0,1 12,2M10,6H14V8H10V6M9,9H15A2,2 0 0,1 17,11V20A2,2 0 0,1 15,22H9A2,2 0 0,1 7,20V11A2,2 0 0,1 9,9M9,11V20H15V11H9Z"/></svg>`
+    svg: `<svg viewBox="0 0 100 100">
+      <path d="M42,20 L58,20 L58,28 L42,28 Z" fill="#0077b6" />
+      <path d="M44,28 L56,28 L56,36 L44,36 Z" fill="#e0f7fa" opacity="0.8" />
+      <path d="M36,36 L64,36 C67,36 68,39 68,42 L64,88 C64,91 61,92 58,92 L42,92 C39,92 36,91 36,88 L32,42 C32,39 33,36 36,36 Z" fill="url(#plasticGrad)" />
+      <!-- Ribs on bottle -->
+      <path d="M34,48 L66,48" stroke="#00b4d8" stroke-width="2.5" opacity="0.6" stroke-linecap="round" />
+      <path d="M34,58 L66,58" stroke="#00b4d8" stroke-width="2.5" opacity="0.6" stroke-linecap="round" />
+      <path d="M34,68 L66,68" stroke="#00b4d8" stroke-width="2.5" opacity="0.6" stroke-linecap="round" />
+      <path d="M35,78 L65,78" stroke="#00b4d8" stroke-width="2.5" opacity="0.6" stroke-linecap="round" />
+      <!-- Glare highlight -->
+      <path d="M38,40 L35,84" stroke="#ffffff" stroke-width="3" opacity="0.5" stroke-linecap="round" />
+      <defs>
+        <linearGradient id="plasticGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#90e0ef" stop-opacity="0.9" />
+          <stop offset="50%" stop-color="#caf0f8" stop-opacity="0.6" />
+          <stop offset="100%" stop-color="#00b4d8" stop-opacity="0.9" />
+        </linearGradient>
+      </defs>
+    </svg>`
   },
   {
-    name: 'Plastic Shopping Bag',
+    name: 'Shopping Bag',
     category: 'plastic',
-    svg: `<svg viewBox="0 0 24 24" fill="#00E5FF"><path d="M16,7H8V5H16V7M18,3H15V1H9V3H6A2,2 0 0,0 4,5V21A2,2 0 0,0 6,23H18A2,2 0 0,0 20,21V5A2,2 0 0,0 18,3M18,21H6V9H18V21M8,11H16V13H8V11M8,15H13V17H8V15Z"/></svg>`
+    svg: `<svg viewBox="0 0 100 100">
+      <!-- Handles -->
+      <path d="M36,36 C36,18 44,18 44,36" stroke="#00e5ff" stroke-width="5" fill="none" stroke-linecap="round" />
+      <path d="M56,36 C56,18 64,18 64,36" stroke="#00e5ff" stroke-width="5" fill="none" stroke-linecap="round" />
+      <!-- Bag Body -->
+      <path d="M28,36 L72,36 C76,36 78,39 77,43 L70,88 C69,91 66,93 62,93 L38,93 C34,93 31,91 30,88 L23,43 C22,39 24,36 28,36 Z" fill="url(#bagGrad)" />
+      <!-- Wrinkles/Creases -->
+      <path d="M30,45 L42,55 M70,45 L58,55 M35,82 L45,72" stroke="#00b4d8" stroke-width="1.5" opacity="0.4" stroke-linecap="round" />
+      <!-- Logo green recycle loop inside bag -->
+      <path d="M46,65 L54,65 L50,57 Z" fill="#2ecc71" opacity="0.75" />
+      <circle cx="50" cy="63" r="8" stroke="#2ecc71" stroke-width="2" fill="none" opacity="0.75" />
+      <defs>
+        <linearGradient id="bagGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#e0f7fa" />
+          <stop offset="70%" stop-color="#b2ebf2" />
+          <stop offset="100%" stop-color="#80deea" />
+        </linearGradient>
+      </defs>
+    </svg>`
   },
   {
-    name: 'Shampoo Container',
+    name: 'Dispenser Bottle',
     category: 'plastic',
-    svg: `<svg viewBox="0 0 24 24" fill="#00E5FF"><path d="M12,3A1.5,1.5 0 0,1 13.5,4.5V6H10.5V4.5A1.5,1.5 0 0,1 12,3M10,7H14A2,2 0 0,1 16,9V21A2,2 0 0,1 14,23H10A2,2 0 0,1 8,21V9A2,2 0 0,1 10,7Z"/></svg>`
+    svg: `<svg viewBox="0 0 100 100">
+      <!-- Pump Head -->
+      <path d="M42,20 L58,20 L58,26 L42,26 Z" fill="#eceff1" />
+      <path d="M50,14 L50,20" stroke="#cfd8dc" stroke-width="6" stroke-linecap="round" />
+      <path d="M50,14 L36,18 C33,19 33,14 36,13 L52,11 Z" fill="#cfd8dc" />
+      <!-- Neck -->
+      <path d="M46,26 L54,26 L54,34 L46,34 Z" fill="#b0bec5" />
+      <!-- Body -->
+      <path d="M30,34 L70,34 C74,34 76,38 76,42 L76,82 C76,88 72,92 66,92 L34,92 C28,92 24,88 24,82 L24,42 C24,38 26,34 30,34 Z" fill="url(#dispGrad)" />
+      <!-- Label -->
+      <rect x="34" y="48" width="32" height="28" rx="3" fill="#ffffff" opacity="0.85" />
+      <rect x="38" y="54" width="24" height="4" fill="#00e5ff" />
+      <rect x="38" y="62" width="16" height="3" fill="#37474f" />
+      <rect x="38" y="68" width="20" height="3" fill="#37474f" />
+      <defs>
+        <linearGradient id="dispGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#00acc1" />
+          <stop offset="50%" stop-color="#00e5ff" />
+          <stop offset="100%" stop-color="#00838f" />
+        </linearGradient>
+      </defs>
+    </svg>`
   },
   
-  // Paper Bin (Cardboard, Newspaper, Bags)
+  // Paper Bin (Cardboard, Newspaper, Cups)
   {
     name: 'Cardboard Box',
     category: 'paper',
-    svg: `<svg viewBox="0 0 24 24" fill="#2ECC71"><path d="M4,2H20A2,2 0 0,1 22,4V20A2,2 0 0,1 20,22H4A2,2 0 0,1 2,20V4A2,2 0 0,1 4,2M4,4V20H20V4H4M6,6H18V10H6V6M8,12H16V14H8V12M8,16H13V18H8V16Z"/></svg>`
+    svg: `<svg viewBox="0 0 100 100">
+      <!-- Main Box Cube base shadow -->
+      <path d="M20,42 L50,56 L80,42 L80,78 L50,92 L20,78 Z" fill="#a78bfa" opacity="0.1" />
+      <!-- Side A -->
+      <path d="M20,42 L50,56 L50,90 L20,76 Z" fill="#b58463" />
+      <!-- Side B -->
+      <path d="M50,56 L80,42 L80,76 L50,90 Z" fill="#9c6644" />
+      <!-- Flap Left Open -->
+      <path d="M20,42 L50,56 L42,32 L12,18 Z" fill="#c69f82" />
+      <!-- Flap Right Open -->
+      <path d="M50,56 L80,42 L88,18 L58,32 Z" fill="#7f5539" />
+      <!-- Opened Dark Interior cavity -->
+      <path d="M20,42 L50,56 L80,42 L50,30 Z" fill="#4a3121" />
+      <!-- Tape Detail -->
+      <path d="M35,49 L43,26" stroke="#ffe082" stroke-width="4" opacity="0.8" />
+      <!-- Fragile Label -->
+      <rect x="56" y="58" width="16" height="12" rx="1" fill="#ffffff" opacity="0.8" transform="skewY(10)" />
+      <rect x="60" y="62" width="8" height="2" fill="#c62828" transform="skewY(10)" />
+      <rect x="60" y="66" width="6" height="1.5" fill="#37474f" transform="skewY(10)" />
+    </svg>`
   },
   {
     name: 'Newspaper',
     category: 'paper',
-    svg: `<svg viewBox="0 0 24 24" fill="#2ECC71"><path d="M20,11H4V13H20V11M20,15H4V17H20V15M4,7H20V9H4V7M20,3H4A2,2 0 0,0 2,5V19A2,2 0 0,0 4,21H20A2,2 0 0,0 22,19V5A2,2 0 0,0 20,3Z"/></svg>`
+    svg: `<svg viewBox="0 0 100 100">
+      <!-- Folded Pages background shadow -->
+      <path d="M26,26 L76,16 L84,80 L34,90 Z" fill="#e0e0e0" />
+      <path d="M22,29 L72,19 L80,83 L30,93 Z" fill="#eceff1" stroke="#cfd8dc" stroke-width="1" />
+      <!-- Main front page -->
+      <path d="M18,32 L68,22 L76,86 L26,96 Z" fill="#ffffff" stroke="#b0bec5" stroke-width="1.5" />
+      <!-- Headline banner -->
+      <path d="M22,36 L64,28" stroke="#1b5e20" stroke-width="6" stroke-linecap="square" opacity="0.85" />
+      <!-- Text columns lines -->
+      <path d="M22,46 L44,42 M22,51 L44,47 M22,56 L44,52 M22,61 L44,57 M22,66 L44,62 M22,71 L44,67 M22,76 L44,72 M22,81 L44,77" stroke="#37474f" stroke-width="2" stroke-linecap="round" />
+      <path d="M48,41 L68,37 M48,46 L68,42 M48,51 L68,47 M48,56 L68,52 M48,61 L68,57 M48,66 L68,62 M48,71 L68,67 M48,76 L68,73" stroke="#37474f" stroke-width="2" stroke-linecap="round" />
+      <!-- Image box mockup -->
+      <rect x="22" y="80" width="22" height="12" fill="#81c784" stroke="#b0bec5" stroke-width="1" />
+    </svg>`
   },
   {
-    name: 'Paper Cup',
+    name: 'Coffee Cup',
     category: 'paper',
-    svg: `<svg viewBox="0 0 24 24" fill="#2ECC71"><path d="M4,2H20L18.5,19A2,2 0 0,1 16.5,21H7.5A2,2 0 0,1 5.5,19L4,2M6.2,4L7.5,19H16.5L17.8,4H6.2Z"/></svg>`
+    svg: `<svg viewBox="0 0 100 100">
+      <!-- White Plastic Lid -->
+      <path d="M28,26 L72,26 L74,18 C74,16 71,16 68,16 L32,16 C29,16 26,16 26,18 Z" fill="#eceff1" stroke="#b0bec5" stroke-width="1" />
+      <rect x="46" y="12" width="8" height="4" fill="#cfd8dc" rx="1" />
+      <!-- Cup Body -->
+      <path d="M30,26 L70,26 L62,88 C62,91 60,92 57,92 L43,92 C40,92 38,91 38,88 Z" fill="url(#cupGrad)" />
+      <!-- Kraft Paper Sleeve -->
+      <path d="M32,44 L68,44 L65,68 L35,68 Z" fill="#b58463" stroke="#9c6644" stroke-width="1" />
+      <!-- Eco green leaf emblem on sleeve -->
+      <path d="M50,50 C44,50 44,58 50,62 C56,58 56,50 50,50 Z" fill="#4caf50" />
+      <path d="M48,52 L52,58" stroke="#ffffff" stroke-width="1" stroke-linecap="round" />
+      <defs>
+        <linearGradient id="cupGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#efebe9" />
+          <stop offset="50%" stop-color="#ffffff" />
+          <stop offset="100%" stop-color="#d7ccc8" />
+        </linearGradient>
+      </defs>
+    </svg>`
   },
 
-  // Glass Bin (Bottles, Jars)
+  // Glass Bin (Colored/clear glass products)
   {
-    name: 'Wine Glass Bottle',
+    name: 'Wine Bottle',
     category: 'glass',
-    svg: `<svg viewBox="0 0 24 24" fill="#3498DB"><path d="M12,2A2,2 0 0,0 10,4V10H9A1,1 0 0,0 8,11V21A2,2 0 0,0 10,23H14A2,2 0 0,0 16,21V11A1,1 0 0,0 15,10H14V4A2,2 0 0,0 12,2M10,12H14V21H10V12Z"/></svg>`
+    svg: `<svg viewBox="0 0 100 100">
+      <!-- Foil Cap -->
+      <path d="M45,12 L55,12 L54,26 L46,26 Z" fill="#c0c0c0" />
+      <path d="M44,26 L56,26 L56,28 L44,28 Z" fill="#708090" />
+      <!-- Long Neck -->
+      <path d="M46,28 L54,28 L53,46 L47,46 Z" fill="url(#glassGrad)" />
+      <!-- Body shoulders -->
+      <path d="M47,46 C41,50 34,54 34,62 L34,88 C34,91 36,92 40,92 L60,92 C64,92 66,91 66,88 L66,62 C66,54 59,50 53,46 Z" fill="url(#glassGrad)" />
+      <!-- Label -->
+      <rect x="38" y="64" width="24" height="20" rx="1.5" fill="#fdfefe" opacity="0.9" />
+      <path d="M44,70 L56,70 M44,74 L52,74" stroke="#8d6e63" stroke-width="1.5" stroke-linecap="round" />
+      <circle cx="50" cy="80" r="2.5" fill="#d32f2f" />
+      <!-- White shine highlight reflection -->
+      <path d="M37,64 L37,84" stroke="#ffffff" stroke-width="2.5" opacity="0.45" stroke-linecap="round" />
+      <defs>
+        <linearGradient id="glassGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#2e7d32" />
+          <stop offset="40%" stop-color="#a1c181" stop-opacity="0.75" />
+          <stop offset="100%" stop-color="#1b5e20" />
+        </linearGradient>
+      </defs>
+    </svg>`
   },
   {
-    name: 'Glass Jam Jar',
+    name: 'Jam Jar',
     category: 'glass',
-    svg: `<svg viewBox="0 0 24 24" fill="#3498DB"><path d="M16,2H8V5H16V2M6,6V20A2,2 0 0,0 8,22H16A2,2 0 0,0 18,20V6H6M10,10H14V14H10V10Z"/></svg>`
+    svg: `<svg viewBox="0 0 100 100">
+      <!-- Checked Pattern Metal Lid -->
+      <path d="M32,16 L68,16 L66,26 L34,26 Z" fill="#d32f2f" />
+      <path d="M32,16 L38,26 M42,16 L48,26 M52,16 L58,26 M62,16 L68,26" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" />
+      <rect x="30" y="24" width="40" height="4" fill="#c2185b" rx="1" />
+      <!-- Jar Body -->
+      <path d="M26,30 L74,30 C77,30 78,33 78,36 L75,86 C75,90 71,92 66,92 L34,92 C29,92 25,90 25,86 L22,36 C22,33 23,30 26,30 Z" fill="url(#jarGrad)" />
+      <!-- Jam Content Inside -->
+      <path d="M28,38 L72,38 L70,86 L30,86 Z" fill="#ad1457" opacity="0.8" />
+      <!-- Label -->
+      <rect x="34" y="48" width="32" height="24" rx="2" fill="#fff9c4" opacity="0.9" stroke="#fbc02d" stroke-width="1" />
+      <!-- Strawberry icon on label -->
+      <path d="M50,56 C47,56 46,60 50,64 C54,60 53,56 50,56 Z" fill="#e53935" />
+      <path d="M48,55 L52,55" stroke="#4caf50" stroke-width="1.5" stroke-linecap="round" />
+      <!-- Glare highlight -->
+      <path d="M28,34 L28,82" stroke="#ffffff" stroke-width="3.5" opacity="0.5" stroke-linecap="round" />
+      <defs>
+        <linearGradient id="jarGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#b3e5fc" stop-opacity="0.85" />
+          <stop offset="50%" stop-color="#e1f5fe" stop-opacity="0.45" />
+          <stop offset="100%" stop-color="#81d4fa" stop-opacity="0.85" />
+        </linearGradient>
+      </defs>
+    </svg>`
   },
   {
-    name: 'Broken Glass Vase',
+    name: 'Broken Vase',
     category: 'glass',
-    svg: `<svg viewBox="0 0 24 24" fill="#3498DB"><path d="M12,3L8,7V9L9,11V15L7,17V21H17V17L15,15V11L16,9V7L12,3M10,8.8L12,6.8L14,8.8V10H10V8.8Z"/></svg>`
+    svg: `<svg viewBox="0 0 100 100">
+      <!-- Glass Shards scattered group -->
+      <!-- Shard 1 -->
+      <polygon points="20,72 44,48 56,76 34,90" fill="#00b4d8" opacity="0.75" stroke="#90e0ef" stroke-width="1.5" />
+      <!-- Shard 2 -->
+      <polygon points="48,22 74,36 62,60 38,48" fill="#48cae4" opacity="0.7" stroke="#ade8f4" stroke-width="1.5" />
+      <!-- Shard 3 -->
+      <polygon points="54,68 84,54 78,84 60,78" fill="#0077b6" opacity="0.8" stroke="#0096c7" stroke-width="1.5" />
+      <!-- Shard 4 (tiny) -->
+      <polygon points="28,26 38,18 42,32 30,36" fill="#03045e" opacity="0.65" stroke="#023e8a" stroke-width="1" />
+      <!-- Glare lines on shards -->
+      <line x1="26" y1="68" x2="48" y2="82" stroke="#ffffff" stroke-width="2.5" opacity="0.5" stroke-linecap="round" />
+      <line x1="52" y1="30" x2="68" y2="52" stroke="#ffffff" stroke-width="2.5" opacity="0.5" stroke-linecap="round" />
+    </svg>`
   },
 
-  // Organic Bin (Food Waste, Bio material)
+  // Organic Bin (Food scrap, bio compostable)
   {
     name: 'Banana Peel',
     category: 'organic',
-    svg: `<svg viewBox="0 0 24 24" fill="#E67E22"><path d="M12,2C10.5,4.5 8.5,6.5 6,7.5C7.5,10.5 8,13.5 8,16.5C5.5,16 3,14.5 1,12C3,15 4,18 4,21C6.5,20 8.5,18 10,15.5C11.5,18.5 13.5,20.5 16,21.5C14.5,18.5 14,15.5 14,12.5C16.5,13 19,14.5 21,17C19,14 18,11 18,8C15.5,9 13.5,11 12,13.5C10.5,11.5 10,8.5 10,5.5C11.5,6 14,7.5 16,10C14.5,7.5 13.5,4.5 12,2Z"/></svg>`
+    svg: `<svg viewBox="0 0 100 100">
+      <!-- Banana stalk cap (brown) -->
+      <path d="M48,16 C48,12 52,12 52,16 L53,24 L47,24 Z" fill="#5c4033" />
+      <!-- Peel Segment 1 (Front Drooping) -->
+      <path d="M50,24 C56,38 78,54 82,72 C74,70 60,56 50,42" fill="#ffb300" stroke="#f57f17" stroke-width="1" />
+      <path d="M48,24 C48,24 50,42 50,42 C44,52 32,70 18,72 C22,54 44,38 48,24" fill="#ffca28" stroke="#f57f17" stroke-width="1" />
+      <!-- Center Peel Segment (Drooping middle) -->
+      <path d="M48,24 C50,38 50,56 52,88 C46,80 46,50 48,24" fill="#ffe082" stroke="#f57f17" stroke-width="1" />
+      <!-- Soft interior white pulp details -->
+      <path d="M47,28 C47,38 45,46 43,56" fill="none" stroke="#fff9c4" stroke-width="3" stroke-linecap="round" opacity="0.7" />
+      <!-- Brown spots / bruises -->
+      <circle cx="72" cy="62" r="2.5" fill="#5c4033" opacity="0.8" />
+      <circle cx="32" cy="56" r="2" fill="#5c4033" opacity="0.8" />
+      <circle cx="50" cy="74" r="3" fill="#5c4033" opacity="0.8" />
+      <path d="M80,71 C81,72 82,73 82,72" stroke="#5c4033" stroke-width="2" stroke-linecap="round" />
+    </svg>`
   },
   {
     name: 'Apple Core',
     category: 'organic',
-    svg: `<svg viewBox="0 0 24 24" fill="#E67E22"><path d="M12,2A3,3 0 0,0 9,5C9,5.5 9.1,6 9.3,6.5C8,8 7,10 7,12C7,14 8,16 9.3,17.5C9.1,18 9,18.5 9,19A3,3 0 0,0 12,22A3,3 0 0,0 15,19C15,18.5 14.9,18 14.7,17.5C16,16 17,14 17,12C17,10 16,8 14.7,6.5C14.9,6 15,5.5 15,5A3,3 0 0,0 12,2M12,4A1,1 0 0,1 13,5C13,5.5 12.8,6 12.5,6.3C12,6.7 12,7.3 12,8V16C12,16.7 12,17.3 12.5,17.7C12.8,18 13,18.5 13,19A1,1 0 0,1 12,20A1,1 0 0,1 11,19C11,18.5 11.2,18 11.5,17.7C12,17.3 12,16.7 12,16V8C12,7.3 12,6.7 11.5,6.3C11.2,6 11,5.5 11,5A1,1 0 0,1 12,4Z"/></svg>`
+    svg: `<svg viewBox="0 0 100 100">
+      <!-- Stem -->
+      <path d="M50,18 C51,12 56,10 58,11" stroke="#5d4037" stroke-width="3.5" fill="none" stroke-linecap="round" />
+      <!-- Green Leaf on stem -->
+      <path d="M54,14 C56,12 62,11 64,13 C64,15 60,19 56,18 Z" fill="#4caf50" stroke="#2e7d32" stroke-width="0.8" />
+      <!-- Red Apple Top Peel -->
+      <path d="M28,34 C30,22 42,22 50,26 C58,22 70,22 72,34 L72,39 L28,39 Z" fill="#ef5350" stroke="#c62828" stroke-width="1" />
+      <path d="M35,30 C38,27 41,26 44,26" fill="none" stroke="#ff8a80" stroke-width="2" stroke-linecap="round" />
+      <!-- Red Apple Bottom Peel -->
+      <path d="M28,76 L72,76 L72,81 C70,92 58,92 50,88 C42,92 30,92 28,81 Z" fill="#ef5350" stroke="#c62828" stroke-width="1" />
+      <!-- White Core Flesh center column -->
+      <path d="M34,39 C38,46 38,68 34,76 L66,76 C62,68 62,46 66,39 Z" fill="#fffde7" stroke="#fff9c4" stroke-width="1" />
+      <!-- Seeds in center -->
+      <path d="M46,54 C45,52 43,54 44,57 C45,59 47,58 46,54 Z" fill="#3e2723" />
+      <path d="M54,58 C55,56 57,58 56,61 C55,63 53,62 54,58 Z" fill="#3e2723" />
+      <!-- Oxidation brown discoloration -->
+      <path d="M38,44 L62,44 M37,71 L63,71" stroke="#d7ccc8" stroke-width="2.5" opacity="0.6" stroke-linecap="round" />
+    </svg>`
   },
   {
     name: 'Eggshell',
     category: 'organic',
-    svg: `<svg viewBox="0 0 24 24" fill="#E67E22"><path d="M12,2A8,8 0 0,0 4,10C4,14.4 7.6,18 12,18A8,8 0 0,0 20,10A8,8 0 0,0 12,2M12,4C14.2,4 16.2,5.2 17.2,7L15,10L12,8L9,11L6.8,8C7.8,5.2 9.8,4 12,4M6,10L9,12.5L12,10L15,13L18,10.5C17.9,12.8 16.5,14.8 14.5,15.6L12,14L9.5,15.6C7.5,14.8 6.1,12.8 6,10Z"/></svg>`
+    svg: `<svg viewBox="0 0 100 100">
+      <!-- Shard 1 (Top half cracked) -->
+      <path d="M24,42 C24,24 38,18 50,18 C62,18 76,24 76,42 L66,54 L56,44 L44,54 L34,44 Z" fill="#f5ebe0" stroke="#e3d5ca" stroke-width="1.5" />
+      <!-- Shard 1 inside shadow -->
+      <path d="M66,54 L56,44 L44,54 L34,44 L26,45 C28,40 38,24 50,24 C62,24 72,40 74,45 Z" fill="#e3d5ca" opacity="0.6" />
+      
+      <!-- Shard 2 (Bottom half cracked) -->
+      <path d="M26,56 L36,66 L46,56 L58,68 L68,56 L74,62 C74,78 62,88 50,88 C38,88 26,78 26,62 Z" fill="#f5ebe0" stroke="#e3d5ca" stroke-width="1.5" />
+      <!-- Shard 2 inside shadow -->
+      <path d="M36,66 L46,56 L58,68 L68,56 L72,58 C68,72 60,82 50,82 C40,82 32,72 28,58 Z" fill="#e3d5ca" opacity="0.6" />
+    </svg>`
   }
 ];
+
 
 // Web Audio API Sound Synthesizer
 function initAudio() {

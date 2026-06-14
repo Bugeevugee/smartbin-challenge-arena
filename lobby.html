@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Multiplayer Lobby - SmartBin Challenge Arena</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/lobby.css">
+</head>
+<body>
+
+  <main class="glass-card lobby-card">
+    <div class="logo-container animate-bounce">
+      <img src="assets/logo.png" alt="EcoLoop Systems Logo" class="app-logo" onerror="this.src='https://img.icons8.com/color/144/recycle.png'">
+      <h1 class="app-title">Arena Lobby</h1>
+      <p id="lobbySessionName" class="app-subtitle">Connecting to session...</p>
+    </div>
+
+    <!-- Active players box -->
+    <section class="players-box">
+      <div class="players-box-header">
+        <span>Active Players</span>
+        <span id="playerCount" class="count-badge">0</span>
+      </div>
+      <div id="playersList" class="players-list">
+        <div class="lobby-loading-text">Finding other EcoWarriors...</div>
+      </div>
+    </section>
+
+    <!-- Action panel -->
+    <div class="lobby-actions">
+      <!-- Show for non-hosts -->
+      <div id="visitorStatus" class="visitor-status">
+        <div class="spinner"></div>
+        <p>Waiting for host to start the game...</p>
+      </div>
+
+      <!-- Show for host only -->
+      <button id="btnStartGame" class="btn btn-primary hidden">
+        <span>🚀 Start Game for Everyone</span>
+      </button>
+
+      <button id="btnLeaveLobby" class="btn btn-outline">
+        🚪 Leave Lobby
+      </button>
+    </div>
+  </main>
+
+  <footer style="margin-top: 24px; font-size: 0.8rem; color: hsl(var(--text-muted)); text-align: center; z-index: 10;">
+    &copy; 2026 EcoLoop Systems | Created by Veronika Khimenko
+  </footer>
+
+  <!-- Include Firebase SDK scripts (v9 compatibility scripts from cdn) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+
+  <!-- Connect config and lobby modules -->
+  <script src="js/firebase-config.js" type="module"></script>
+  <script src="js/lobby.js" type="module"></script>
+</body>
+</html>

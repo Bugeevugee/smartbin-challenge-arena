@@ -158,7 +158,7 @@
   to { opacity: 0; }
 }
 
-/* Falling Waste Item */
+/* Falling Waste Item (Realistic, borderless style) */
 .falling-item {
   position: absolute;
   width: 80px;
@@ -167,32 +167,29 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  background: rgba(15, 23, 42, 0.85);
-  border: 1.5px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.35);
+  background: transparent;
+  border: none;
   cursor: grab;
   user-select: none;
   touch-action: none;
   z-index: 100;
-  padding: 6px;
-  transition: border-color 0.2s, box-shadow 0.2s, background 0.3s;
+  padding: 0;
+  transition: transform 0.2s, filter 0.2s;
 }
 
 .falling-item:active {
   cursor: grabbing;
-  border-color: hsl(var(--accent-cyan));
-  box-shadow: 0 8px 25px rgba(0, 229, 255, 0.4);
-  transform: scale(1.08);
+  transform: scale(1.1);
 }
 
 .item-icon-wrapper {
-  width: 38px;
-  height: 38px;
+  width: 70px;
+  height: 70px;
   display: flex;
   align-items: center;
   justify-content: center;
   pointer-events: none;
+  transition: transform 0.2s;
 }
 
 .item-icon-wrapper svg {
@@ -202,38 +199,57 @@
 }
 
 .item-name-tag {
+  position: absolute;
+  bottom: -16px;
+  left: 50%;
+  transform: translateX(-50%);
   font-family: var(--font-body);
-  font-size: 0.58rem;
+  font-size: 0.52rem;
   font-weight: 800;
   color: white;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   text-align: center;
-  margin-top: 4px;
   pointer-events: none;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8), 0 0 4px rgba(0, 0, 0, 0.5);
-  width: 92%;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 3px 8px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
   white-space: nowrap;
+  max-width: 105px;
   overflow: hidden;
   text-overflow: ellipsis;
+  z-index: 110;
 }
 
-/* Category-specific glowing background gradients & borders */
+/* Category-specific glowing drop-shadow filters */
 .falling-item.plastic-hint { 
-  border-color: rgba(0, 229, 255, 0.4); 
-  background: radial-gradient(circle, rgba(0, 229, 255, 0.18) 0%, rgba(15, 23, 42, 0.92) 80%);
+  filter: drop-shadow(0 0 5px rgba(0, 229, 255, 0.35)) drop-shadow(0 6px 8px rgba(0, 0, 0, 0.45));
 }
+.falling-item.plastic-hint:active {
+  filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.65)) drop-shadow(0 8px 12px rgba(0, 0, 0, 0.5));
+}
+
 .falling-item.paper-hint { 
-  border-color: rgba(45, 138, 78, 0.4); 
-  background: radial-gradient(circle, rgba(46, 204, 113, 0.18) 0%, rgba(15, 23, 42, 0.92) 80%);
+  filter: drop-shadow(0 0 5px rgba(46, 204, 113, 0.35)) drop-shadow(0 6px 8px rgba(0, 0, 0, 0.45));
 }
+.falling-item.paper-hint:active {
+  filter: drop-shadow(0 0 10px rgba(46, 204, 113, 0.65)) drop-shadow(0 8px 12px rgba(0, 0, 0, 0.5));
+}
+
 .falling-item.glass-hint { 
-  border-color: rgba(5, 102, 141, 0.4); 
-  background: radial-gradient(circle, rgba(52, 152, 219, 0.18) 0%, rgba(15, 23, 42, 0.92) 80%);
+  filter: drop-shadow(0 0 5px rgba(52, 152, 219, 0.35)) drop-shadow(0 6px 8px rgba(0, 0, 0, 0.45));
 }
+.falling-item.glass-hint:active {
+  filter: drop-shadow(0 0 10px rgba(52, 152, 219, 0.65)) drop-shadow(0 8px 12px rgba(0, 0, 0, 0.5));
+}
+
 .falling-item.organic-hint { 
-  border-color: rgba(230, 126, 34, 0.4); 
-  background: radial-gradient(circle, rgba(230, 126, 34, 0.18) 0%, rgba(15, 23, 42, 0.92) 80%);
+  filter: drop-shadow(0 0 5px rgba(230, 126, 34, 0.35)) drop-shadow(0 6px 8px rgba(0, 0, 0, 0.45));
+}
+.falling-item.organic-hint:active {
+  filter: drop-shadow(0 0 10px rgba(230, 126, 34, 0.65)) drop-shadow(0 8px 12px rgba(0, 0, 0, 0.5));
 }
 
 /* Sorting Bins Section */

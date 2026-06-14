@@ -26,17 +26,18 @@
       <input type="text" id="nickname" class="input-field" placeholder="EcoWarrior" maxlength="15" autofocus required>
     </div>
 
-    <div style="margin-top: 10px;">
-      <button id="btnMulti" class="btn btn-primary">
-        <span>🏆 Join Competition</span>
+    <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 4px;">
+      <button id="btnSingle" class="btn btn-primary">
+        <span>🌱 Single Player</span>
       </button>
-      <button id="btnSingle" class="btn btn-secondary">
-        <span>🌱 Local Practice</span>
+      
+      <button id="btnMulti" class="btn btn-secondary">
+        <span>🏆 Multiplayer Lobby</span>
       </button>
       
       <!-- Quick link to view leaderboard without playing -->
-      <button id="btnLeaderboard" class="btn btn-outline" style="font-size: 0.85rem; padding: 10px;">
-        📊 View Leaderboard
+      <button id="btnLeaderboard" class="btn btn-outline">
+        📊 Leader Score
       </button>
     </div>
   </main>
@@ -46,10 +47,9 @@
   </footer>
 
   <script>
-    // Simple verification and routing
     const nicknameInput = document.getElementById('nickname');
-    const btnMulti = document.getElementById('btnMulti');
     const btnSingle = document.getElementById('btnSingle');
+    const btnMulti = document.getElementById('btnMulti');
     const btnLeaderboard = document.getElementById('btnLeaderboard');
 
     // Retrieve previous nickname if exists
@@ -60,7 +60,6 @@
     function saveNickname() {
       let nick = nicknameInput.value.trim();
       if (!nick) {
-        // Pre-fill a random one if empty
         const randomNum = Math.floor(Math.random() * 900) + 100;
         nick = 'EcoStudent_' + randomNum;
       }
@@ -68,14 +67,14 @@
       return nick;
     }
 
-    btnMulti.addEventListener('click', () => {
-      const nickname = saveNickname();
-      window.location.href = `game.html?mode=multi&nickname=${encodeURIComponent(nickname)}`;
-    });
-
     btnSingle.addEventListener('click', () => {
       const nickname = saveNickname();
       window.location.href = `game.html?mode=single&nickname=${encodeURIComponent(nickname)}`;
+    });
+
+    btnMulti.addEventListener('click', () => {
+      const nickname = saveNickname();
+      window.location.href = `lobby.html?nickname=${encodeURIComponent(nickname)}`;
     });
 
     btnLeaderboard.addEventListener('click', () => {
